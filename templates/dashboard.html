@@ -1,0 +1,16 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="page-wrapper">
+        <div class="container-fluid pt-25">
+            {% include 'includes/base_filters.html' %}            
+
+            {% include 'includes/dashboard_total_summary.html' %}
+            
+            {% include 'includes/dashboard_table_report.html' %}
+
+        </div>
+    </div>
+    <!-- /Main Content -->
+{% endblock %}

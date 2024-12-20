@@ -1,0 +1,6 @@
+#requirements.txt
+flask
+pandas
+openpyxl
+waitress
+python-dotenv
