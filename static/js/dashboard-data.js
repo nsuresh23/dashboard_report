@@ -51,6 +51,10 @@ function updateFilterValues(data, selectedFilter) {
 function getFilterData(selectedFilter) {
     const formData = new FormData();
 
+	// Selected menu
+	var selectedMenuItem = $('.side-menu.active').data('menu-item');
+	formData.append('menu', selectedMenuItem ? selectedMenuItem : "");
+
 	// Store the current selected values before sending the request
     $('#type-of-import-filter').data('selected', $('#type-of-import-filter').val());
     $('#batch-name-filter').data('selected', $('#batch-name-filter').val());
@@ -86,10 +90,21 @@ function getFilterData(selectedFilter) {
     	success:function(response) {
 			const data = response.data;
 			const totals = response.totals;
-			updateFilterValues(data, selectedFilter);
-			updateTotals(totals);
-			updateCharts(totals);
-			updateDataTable(data);
+			const error = response.error;
+
+			if(data && !$.isEmptyObject(data)) {
+				updateDataTable(data);
+				updateFilterValues(data, selectedFilter);
+			}
+
+			if(totals && !$.isEmptyObject(totals)) {
+				updateTotals(totals);
+				updateCharts(totals);
+			}
+
+			if(error) {
+				errorAlert(error);
+			}
 
 			// Re-apply selected values after data update
             $('#type-of-import-filter').data('selected', $('#type-of-import-filter').val());
@@ -102,7 +117,20 @@ function getFilterData(selectedFilter) {
 	});
 }
 
-getFilterData("");
+
+// getFilterData("");
+
+$(document).ready(function() {
+	$('.side-menu.active').trigger('click');
+});
+
+$(".side-menu").on("click", function(e){
+	e.preventDefault(true);
+	$('.side-menu').removeClass('active');
+	$(this).addClass('active');
+	clearAll();
+	getFilterData("");
+});
 
 function updateTotals(data) {
 	$('#total-lines').html(data.total_lines);
@@ -124,8 +152,13 @@ var echartsConfig = function(data) {
 	const statusData = data.status_data;
 
 	if( $('#status-chart').length > 0 ){
-		var eChart_2 = echarts.init(document.getElementById('status-chart'));
-		var option1 = {
+
+		// If status chart instance doesn't exist, create it
+		if (!statusChartInstance) {
+			statusChartInstance = echarts.init(document.getElementById('status-chart'));
+		}
+	
+		var statusChartOptions = {
 			legend: {
 				show:true,
 			},
@@ -180,12 +213,16 @@ var echartsConfig = function(data) {
 				}
 			]
 		};
-		eChart_2.setOption(option1);
-		eChart_2.resize();
+		statusChartInstance.setOption(statusChartOptions);
+		statusChartInstance.resize();
 	}
 	if( $('#count-chart').length > 0 ){
-		var eChart_3 = echarts.init(document.getElementById('count-chart'));
-		var option3 = {
+
+		// If count chart instance doesn't exist, create it
+		if (!countChartInstance) {
+			countChartInstance = echarts.init(document.getElementById('count-chart'));
+		}
+		var countChartOptions = {
 			tooltip: {
 				trigger: 'item',
 				formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -227,8 +264,8 @@ var echartsConfig = function(data) {
 				}
 			]
 		};
-		eChart_3.setOption(option3);
-		eChart_3.resize();
+		countChartInstance.setOption(countChartOptions);
+		countChartInstance.resize();;
 	}
 }
 /*****E-Charts function end*****/
@@ -257,11 +294,11 @@ function updateDataTable(data) {
 		],
 		dom: 'Bfrtip',
 		buttons: [
-			'copy', 'csv', 'excel', 'pdf', 'print'
+			// 'copy', 'csv', 'excel', 'pdf', 'print'
+			'csv'
 		]
 	});
 }
-
 
 function errorAlert(msg) {
 	const Toast = Swal.mixin({
@@ -285,4 +322,38 @@ function errorAlert(msg) {
             popup: 'animated fadeOut faster'
         },
 	  });
+}
+
+function clearAll() {
+	clearTotals();
+    clearCharts();
+    clearDataTable();	
+}
+
+// Function to clear the totals
+function clearTotals() {
+    $('#total-lines').html('0');
+    $('#total-success').html('0');
+    $('#total-failures').html('0');
+    $('#total-time-days').html('0');
+    $('#total-time-hours').html('0');
+    $('#total-time-minutes').html('0');
+    $('#total-time-seconds').html('0');
+}
+
+// Function to clear the charts
+function clearCharts() {
+
+    if (statusChartInstance) {
+        statusChartInstance.clear();
+    }
+
+    if (countChartInstance) {
+        countChartInstance.clear();
+    }
+}
+
+// Function to clear the DataTable
+function clearDataTable() {
+    $('#dashboard-report-table').DataTable().clear().destroy();
 }

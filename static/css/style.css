@@ -1908,7 +1908,7 @@ ul.uo-list {
     border-radius: 0;
     margin: 0;
     overflow-y: auto;
-    background-color: #fff;
+    /* background-color: #fff; */
     backface-visibility: hidden;
 }
 
@@ -2364,7 +2364,7 @@ a#toggle_mobile_nav {
 }
 
 .page-wrapper {
-    /* margin-left: 225px; */
+    margin-left: 225px;
     padding: 70px 20px;
     /* background: #444; */
     position: relative;
@@ -2446,9 +2446,9 @@ a#toggle_mobile_nav {
     z-index: 1030;
 }
 
-.wrapper.theme-1-active .fixed-sidebar-left .side-nav {
+/* .wrapper.theme-1-active .fixed-sidebar-left .side-nav {
     background: #282e3f;
-}
+} */
 
 .wrapper.theme-2-active .navbar.navbar-inverse.navbar-fixed-top {
     background: #282e3f;
@@ -2554,7 +2554,12 @@ a#toggle_mobile_nav {
     background: #282e3f;
 }
 
-.wrapper.theme-1-active .fixed-sidebar-left, .wrapper.theme-3-active .fixed-sidebar-left, .wrapper.theme-6-active .fixed-sidebar-left {
+.wrapper.theme-1-active .fixed-sidebar-left {
+    background: #353434;
+    border-right: 1px solid #282e3f;
+}
+
+.wrapper.theme-3-active .fixed-sidebar-left, .wrapper.theme-6-active .fixed-sidebar-left {
     border-right: 1px solid #282e3f;
 }
 
@@ -2586,7 +2591,11 @@ a#toggle_mobile_nav {
     color: #f33923;
 }
 
-.wrapper.theme-1-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-2-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-3-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-4-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-5-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-6-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active {
+.wrapper.theme-1-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active {
+    background: #0fc5bb;
+}
+
+.wrapper.theme-2-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-3-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-4-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-5-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active, .wrapper.theme-6-active.pimary-color-blue .fixed-sidebar-left .side-nav > li > a.active {
     color: #0fc5bb;
 }
 
