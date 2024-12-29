@@ -57,7 +57,7 @@ class DataService:
                 obj = str(obj)
             return obj
 
-        return df.map(convert_to_serializable)
+        return df.applymap(convert_to_serializable)
     
     def calculate_total_time_taken(self, df):        
         time_taken = pd.to_timedelta(df["time_taken"], errors="coerce")
