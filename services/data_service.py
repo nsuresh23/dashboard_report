@@ -108,10 +108,9 @@ class DataService:
         # Filter load_df based on the condition for overview_completed_count
         if "type" in count_df.columns and "object_type(real_name)" in load_df.columns and "status" in load_df.columns:
             # Ensure status is numeric for summing
-            load_df["status"] = load_df["status"].apply(lambda x: 1 if x == "Completed" else 0)
-            print(load_df["status"].tolist())
+            # load_df["status"] = load_df["status"].apply(lambda x: 1 if x == "Completed" else 0)
             total_summary["overview_completed_count"] = int(
-                load_df[load_df["object_type(real_name)"].isin(count_df["type"])]["status"].sum()
+                load_df[load_df["object_type(real_name)"].isin(count_df["type"]) & load_df["status"].isin(["Completed"])]["successful_count"].sum()
             )
         else:
             total_summary["overview_completed_count"] = 0
