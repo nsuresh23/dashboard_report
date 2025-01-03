@@ -22,8 +22,10 @@ def get_data():
         if request.form.get("menu"):
             sheet_name = request.form.get("menu");
         df = data_service.load_data(sheet_name=sheet_name)
-        df = DataService.format_date_column(df, column_name="date")    
+        df = DataService.format_date_column(df, column_name="date") if df.get("date") is not None else df   
 
+        if request.form.get("type"):
+            filters["type"] = request.form.get("type").split(",")
         if request.form.get("type_of_import"):
             filters["type_of_import"] = request.form.get("type_of_import").split(",")
         if request.form.get("batch_name"):
@@ -33,7 +35,11 @@ def get_data():
 
         # Apply filters
         filtered_df = DataService.filter_data(df, filters)
-        total_summary = data_service.get_total_summary(filtered_df)
+        if sheet_name == "Count":
+            load_df = data_service.load_data(sheet_name="Load")
+            total_summary = data_service.get_overview_total_summary(filtered_df, load_df)
+        else:
+            total_summary = data_service.get_total_summary(filtered_df)
         serialized_data = DataService.format_to_serializable(filtered_df)
         serialized_data_dict = serialized_data.to_dict(orient='records')
     except Exception as e:

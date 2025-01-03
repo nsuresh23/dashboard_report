@@ -738,7 +738,7 @@ code {
 }
 
 .preloader-it {
-    background: #fff;
+    /* background: #fff; */
     position: fixed;
     z-index: 10001;
     height: 100%;

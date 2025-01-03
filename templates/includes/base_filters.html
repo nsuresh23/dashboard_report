@@ -8,11 +8,15 @@
                         <form class="form-horizontal" id="filter-form" method="POST" action="{{ url_for('dashboard.get_data') }}">
                             <div class="form-group mb-0">
                                 <div class="col-sm-12">
-                                    <div class="row">
-                                        <!-- <div class="col-sm-3">
-                                            <label class="control-label mb-10">Date Range</label>
-                                            <input class="form-control input-daterange-datepicker" type="text" name="daterange" value="01/01/2016 - 01/31/2016"/>
-                                        </div> -->
+                                    <div class="row overview">
+                                        <div class="col-sm-4">
+                                            <label class="control-label mb-10">Type</label>
+                                            <select id="type-filter" class="selectpicker" name="type_filter" multiple data-live-search="true" data-style="form-control btn-default btn-outline">
+                                                <option value="">All</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row non-overview">
                                         <div class="col-sm-4">
                                             <label class="control-label mb-10">Type of Import</label>
                                             <select id="type-of-import-filter" class="selectpicker" name="type_of_import_filter" multiple data-live-search="true" data-style="form-control btn-default btn-outline">
