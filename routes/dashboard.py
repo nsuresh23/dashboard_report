@@ -37,7 +37,8 @@ def get_data():
         filtered_df = DataService.filter_data(df, filters)
         if sheet_name == "Count":
             load_df = data_service.load_data(sheet_name="Load")
-            total_summary = data_service.get_overview_total_summary(filtered_df, load_df)
+            filtered_df = data_service.get_overview_df_data(filtered_df, load_df)
+            total_summary = data_service.get_overview_total_summary(filtered_df)
         else:
             total_summary = data_service.get_total_summary(filtered_df)
         serialized_data = DataService.format_to_serializable(filtered_df)

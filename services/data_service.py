@@ -101,19 +101,32 @@ class DataService:
 
         return total_summary
 
-    def get_overview_total_summary(self, count_df, load_df):
+    def get_overview_df_data(self, count_df, load_df):
+        for row_index, row in count_df.iterrows():
+            # Filter load_df based on the condition for overview_completed_count
+            if "type" in row and "object_type(real_name)" in load_df.columns and "status" in load_df.columns and "successful_count" in load_df.columns:
+                completed_count = int(
+                    load_df[load_df["object_type(real_name)"].isin([row["type"]]) & load_df["status"].isin(["Completed"])]["successful_count"].sum()
+                )
+                count_df.at[row_index, "completed_count"] = completed_count
+                if "total_count" in row:
+                    completed_percentage = round((completed_count / int(row["total_count"])) * 100, 2)
+                    count_df.at[row_index, "completed_percentage"] = completed_percentage
+                    # progress_html = f"<div class='progress progress-xs mb-0'><div class='progress-bar progress-bar-success' style='width: {completed_percentage}%'></div></div>"
+
+                    progress_html = f"""<span class='font-12 head-font txt-dark'>Completed<span class='pull-right'>{completed_percentage}%</span></span>
+                    <div class='progress mt-10 mb-30'>
+                        <div class='progress-bar progress-bar-success' aria-valuenow='{completed_count}' aria-valuemin='0' aria-valuemax='100' style='width: 80%' role='progressbar'></div>
+                    </div>"""
+
+                    count_df.at[row_index, "progress"] = progress_html
+        count_df["completed_count"] = count_df["completed_count"].astype(int)
+        return count_df
+    
+    def get_overview_total_summary(self, count_df):
         total_summary = {}
         total_summary["overview_total_count"] = int(count_df["total_count"].sum()) if "total_count" in count_df.columns else 0
-
-        # Filter load_df based on the condition for overview_completed_count
-        if "type" in count_df.columns and "object_type(real_name)" in load_df.columns and "status" in load_df.columns:
-            # Ensure status is numeric for summing
-            # load_df["status"] = load_df["status"].apply(lambda x: 1 if x == "Completed" else 0)
-            total_summary["overview_completed_count"] = int(
-                load_df[load_df["object_type(real_name)"].isin(count_df["type"]) & load_df["status"].isin(["Completed"])]["successful_count"].sum()
-            )
-        else:
-            total_summary["overview_completed_count"] = 0
+        total_summary["overview_completed_count"] = int(count_df["completed_count"].sum()) if "completed_count" in count_df.columns else 0
 
         # Defining status list and data
         total_summary["status_list"] = ["Completed", "Total"]

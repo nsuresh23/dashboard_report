@@ -154,13 +154,13 @@ $(".side-menu").on("click", function(e){
 
 	if(selectedMenuItem == "Count") {
 		$(".non-overview").hide();
-		$(".progress-chart").removeClass("col-lg-4");
-		$(".progress-chart").addClass("col-lg-8");
+		// $(".progress-chart").removeClass("col-lg-4");
+		// $(".progress-chart").addClass("col-lg-8");
 		$(".overview").show();
 	} else {
 		$(".overview").hide();
-		$(".progress-chart").removeClass("col-lg-8");
-		$(".progress-chart").addClass("col-lg-4");
+		// $(".progress-chart").removeClass("col-lg-8");
+		// $(".progress-chart").addClass("col-lg-4");
 		$(".non-overview").show();
 	}
 
@@ -325,9 +325,9 @@ function updateDataTable(data) {
 	let selectedMenuItem = $('.side-menu.active').data('menu-item');
 	var columnsInData = [];
 	if (selectedMenuItem == "Count") {
-		columnsInData = ['type', 'total_count'];
+		columnsInData = ['type', 'completed_count', 'total_count', 'progress'];
 	} else {
-		columnsInData = ['date', 'object_type(real_name)','object_type(display_name)', 'type_ofimport', 'machine_hostname', 'batch_name', 'count_of_lines_in_batch_file', 'status', 'successful_count', 'failure_count', 'time_taken'];
+		columnsInData = ['object_type(real_name)','object_type(display_name)', 'type_ofimport', 'machine_hostname', 'batch_name', 'count_of_lines_in_batch_file', 'status', 'successful_count', 'failure_count', 'time_taken'];
 	}
 	$('.dashboard-report-table-head-row').html('');
 	var columnsToShow = [];
@@ -349,7 +349,6 @@ function updateDataTable(data) {
 		dom: 'Bfrtip',
 		buttons: [
 			// 'copy', 'csv', 'excel', 'pdf', 'print'
-			'csv'
 		]
 	});
 }
